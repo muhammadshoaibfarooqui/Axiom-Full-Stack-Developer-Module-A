@@ -29,6 +29,13 @@ function showSuccess(input){
         // //override the text for small element using the input message
         // small.innerText = message;
 }
+
+//Function to check if email is valid
+function isValidEmail (email){
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 //Event Listeners
 //Create event listener for submit button
 
@@ -50,6 +57,9 @@ form.addEventListener('submit',function(e){
         //alert('required');
         showError(email,'email is required');
     }
+    else if(!isValidEmail(email.value)){
+        showError(email,'Email is invalid');
+    }
     else{
         showSuccess(email);
     }
@@ -62,7 +72,7 @@ form.addEventListener('submit',function(e){
     }
     if(confirmpassword.value===''){
         //alert('required');
-        showError(confirmpassword,'Username is required');
+        showError(confirmpassword,'confirmpassword is required');
     }
     else{
         showSuccess(confirmpassword);
