@@ -31,10 +31,21 @@ function showSuccess(input){
 }
 
 //Function to check if email is valid
-function isValidEmail (email){
+// function isValidEmail (email){
+//     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     return re.test(String(email).toLowerCase());
+// }
+function checkEmail (input){
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    if(re.test(input.value.trim())){
+        showSuccess(input);
+    }
+    else{
+        //showError(input,`${getFieldId(input)} is not valid`);
+        showError(input,`Please provide valid a email`);
+    }
 }
+
 
 //Function to check if required fields have data
 function checkRequired(inputArray)
@@ -47,19 +58,42 @@ function checkRequired(inputArray)
             //showError(input,`${input.id} is required`);
             showError(input,`${getFieldId(input)} is required`);
         }
-        else if(!isValidEmail(email.value)) {
-            showError(email,`${getFieldId(email)} is invalid`);
-        }
+        // else if(!isValidEmail(email.value)) {
+        //     showError(email,`${getFieldId(email)} is invalid`);
+        // }
         else
         {
             showSuccess(input);
         }
     });
 }
+//Function to check if password and confirm password match
+function checkPasswordsMatch(input1,input2){
+    if(input1.value != input2.value)
+    {
+        showError(input2,"Password don't match");
+    }
 
+}
 //Function to get the id of the input field
 function getFieldId(input){
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+}
+
+//Function to check length of input field
+function checkLength(input,min,max){
+    if(input.value.length < min)
+    {
+        showError(input,`${getFieldId(input)} needs to be atleast ${min} characters`);
+    }
+    else if(input.value.length > max)
+    {
+        showError(input,`${getFieldId(input)} needs to be less than ${max} characters`);
+    }
+    else
+    {
+        showSuccess(input);
+    }
 }
 
 //Event Listeners
@@ -71,4 +105,8 @@ form.addEventListener('submit',function(e){
     //console.log(username.value);
 
     checkRequired([username,email,password,confirmpassword]);
+    checkLength(username,3,10);
+    checkLength(password,6,30);
+    checkEmail(email);
+    checkPasswordsMatch(password,confirmpassword);
 });
